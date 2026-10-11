@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>薄肌首页原型</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg:#f3f3ef;
+      --ink:#11120f;
+      --muted:#585b53;
+      --panel:#e7e8e1;
+      --line:#c7c9bf;
+      --accent:#b6ff18;
+      --accent-ink:#11120f;
+      --surface:#ffffff;
+      --photo-filter: grayscale(1) contrast(1.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:#0b0c0a;
+        --ink:#f4f5ed;
+        --muted:#a4a79d;
+        --panel:#151713;
+        --line:#30332c;
+        --accent:#b6ff18;
+        --accent-ink:#0b0c0a;
+        --surface:#10120e;
+        --photo-filter: grayscale(1) contrast(1.16) brightness(.82);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .grain{position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E")}
+    .wrap{width:min(1240px,calc(100% - 48px));margin:auto}
+    .topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .nav{display:flex;gap:26px;font-size:13px;font-weight:600}
+    .nav a{position:relative}.nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-7px;height:2px;background:var(--accent);transition:right .25s}.nav a:hover:after,.nav a:focus-visible:after{right:0}
+    .micro{font:600 11px/1 "Noto Sans SC",sans-serif;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+    .status{display:flex;align-items:center;gap:9px}.status-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 14%,transparent)}
+    .hero{min-height:calc(100vh - 72px);display:grid;grid-template-columns:1.1fr .9fr;border-bottom:1px solid var(--line)}
+    .hero-copy{display:flex;flex-direction:column;justify-content:center;padding:70px 6vw 70px max(24px,calc((100vw - 1240px)/2));position:relative;z-index:2}
+    .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px;color:var(--muted);font-size:13px}.eyebrow:before{content:"";width:52px;height:2px;background:var(--accent)}
+    h1{font-size:clamp(58px,7.6vw,118px);line-height:.96;letter-spacing:-.065em;margin:0 0 34px;font-weight:900;max-width:780px}
+    h1 span{display:block}
+    h1 .outline{color:transparent;-webkit-text-stroke:1.5px var(--ink);margin-left:.16em;margin-top:.08em}
+    .lede{max-width:520px;font-size:clamp(16px,1.4vw,20px);line-height:1.75;color:var(--muted);margin:0 0 34px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{border:1px solid var(--ink);padding:15px 22px;display:inline-flex;align-items:center;justify-content:center;gap:12px;font-weight:700;transition:.22s;background:transparent;color:var(--ink);cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}.btn:hover{transform:translateY(-2px)}.btn span{font-size:20px;line-height:1}
+    .hero-visual{position:relative;min-height:680px;overflow:hidden;border-left:1px solid var(--line);background:var(--panel)}
+    .hero-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 34%;filter:var(--photo-filter);transform:scale(1.03)}
+    .hero-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 48%,rgba(0,0,0,.78));mix-blend-mode:multiply}
+    .measure{position:absolute;inset:24px;z-index:2;border:1px solid rgba(255,255,255,.35);color:#fff;pointer-events:none}.corner{position:absolute;width:18px;height:18px;border-color:var(--accent)}.c1{left:-1px;top:-1px;border-left:3px solid;border-top:3px solid}.c2{right:-1px;top:-1px;border-right:3px solid;border-top:3px solid}.c3{left:-1px;bottom:-1px;border-left:3px solid;border-bottom:3px solid}.c4{right:-1px;bottom:-1px;border-right:3px solid;border-bottom:3px solid}
+    .visual-note{position:absolute;z-index:3;left:48px;right:48px;bottom:48px;color:#fff;display:flex;justify-content:space-between;align-items:end;gap:20px}.visual-note strong{font-size:28px;line-height:1.2}.visual-note p{margin:7px 0 0;color:rgba(255,255,255,.72);font-size:13px}.index-no{font:400 64px/1 "Archivo Black",sans-serif;color:var(--accent)}
+    .marquee{overflow:hidden;border-bottom:1px solid var(--line);background:var(--accent);color:var(--accent-ink);padding:12px 0;font:700 13px/1 "Noto Sans SC",sans-serif;white-space:nowrap}.track{display:inline-block;animation:marquee 18s linear infinite}.track span{margin-right:42px}.track i{font-style:normal;margin-right:42px;font-size:18px}@keyframes marquee{to{transform:translateX(-50%)}}
+    .section{padding:110px 0;border-bottom:1px solid var(--line)}
+    .section-head{display:grid;grid-template-columns:.7fr 1.3fr;gap:50px;margin-bottom:58px}.section-head h2{font-size:clamp(40px,5vw,76px);line-height:1.02;letter-spacing:-.055em;margin:0;max-width:750px}.section-head p{max-width:470px;justify-self:end;align-self:end;color:var(--muted);line-height:1.8;margin:0}
+    .definition-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.definition-main{background:var(--panel);min-height:420px;padding:40px;position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}.definition-main:after{content:"薄";position:absolute;right:-.04em;bottom:-.3em;font-weight:900;font-size:320px;line-height:1;color:color-mix(in srgb,var(--ink) 5%,transparent);pointer-events:none}.formula{display:grid;grid-template-columns:repeat(3,1fr);position:relative;z-index:1}.formula div{padding:24px;border-right:1px solid var(--line)}.formula div:last-child{border:0}.formula b{display:block;font-size:clamp(26px,3vw,48px);letter-spacing:-.04em;margin-bottom:8px}.formula small{color:var(--muted)}
+    .quote{font-size:clamp(25px,3vw,44px);line-height:1.3;font-weight:700;letter-spacing:-.04em;max-width:680px;position:relative;z-index:1}.quote mark{background:var(--accent);color:var(--accent-ink);padding:0 .1em}
+    .definition-side{display:grid;grid-template-rows:1fr 1fr;gap:12px}.mini-card{border:1px solid var(--line);padding:30px;display:flex;flex-direction:column;justify-content:space-between;min-height:200px}.mini-card .num{font:400 46px/1 "Archivo Black",sans-serif;color:var(--accent);-webkit-text-stroke:1px color-mix(in srgb,var(--ink) 18%,transparent)}.mini-card p{color:var(--muted);line-height:1.65;margin:12px 0 0}.mini-card b{font-size:19px}
+    .system{display:grid;grid-template-columns:.95fr 1.05fr;border:1px solid var(--line)}
+    .system-media{position:relative;min-height:640px;overflow:hidden}.system-media img{width:100%;height:100%;position:absolute;object-fit:cover;filter:var(--photo-filter)}.system-media:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.46))}.system-label{position:absolute;left:28px;bottom:28px;z-index:2;color:#fff;font-size:13px}
+    .system-panel{padding:40px 44px;display:flex;flex-direction:column}.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:34px}.tab{border:0;background:transparent;color:var(--muted);padding:9px 13px;cursor:pointer;font-weight:700}.tab.active{background:var(--accent);color:var(--accent-ink)}
+    .plan{display:none;flex:1}.plan.active{display:flex;flex-direction:column;animation:appear .28s ease both}@keyframes appear{from{opacity:0;transform:translateY(8px)}}.plan h3{font-size:clamp(38px,4vw,64px);line-height:1.02;letter-spacing:-.055em;margin:0 0 20px}.plan>p{color:var(--muted);line-height:1.8;margin:0 0 36px;max-width:520px}.protocol{margin-top:auto}.protocol-row{display:grid;grid-template-columns:50px 1fr auto;align-items:center;gap:16px;padding:18px 0;border-top:1px solid var(--line)}.protocol-row .dot{width:9px;height:9px;border:2px solid var(--accent);border-radius:50%}.protocol-row b{font-size:15px}.protocol-row span:last-child{font-size:12px;color:var(--muted)}
+    .manifesto{padding:110px 0 90px}.manifesto-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end}.manifesto h2{font-size:clamp(52px,8vw,126px);line-height:.94;letter-spacing:-.065em;margin:0}.manifesto h2 span{color:var(--accent);-webkit-text-stroke:1px var(--ink);display:block;margin-top:.06em}.manifesto-copy{padding-bottom:5px}.manifesto-copy p{font-size:18px;line-height:1.8;color:var(--muted);margin:0 0 30px}.steps{display:flex;gap:10px}.step{flex:1;padding:18px 14px;border-top:3px solid var(--line)}.step.active{border-color:var(--accent)}.step b{display:block;font-size:22px;margin-bottom:4px}.step small{color:var(--muted)}
+    .spectrum{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+    .spectrum-card{padding:34px 30px;min-height:250px;position:relative;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
+    .spectrum-card:last-child{border-right:0}.spectrum-card.active{background:var(--accent);color:var(--accent-ink)}
+    .spectrum-card .range{font:400 52px/1 "Archivo Black",sans-serif;letter-spacing:-.05em}.spectrum-card h3{font-size:25px;margin:0 0 8px}.spectrum-card p{margin:0;color:var(--muted);line-height:1.65}.spectrum-card.active p{color:color-mix(in srgb,var(--accent-ink) 68%,transparent)}
+    .benchmark{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.benchmark article{border:1px solid var(--line);padding:25px 28px}.benchmark b{display:block;font-size:18px;margin-bottom:7px}.benchmark p{margin:0;color:var(--muted);line-height:1.65}
+    .week-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+    .day{min-height:220px;padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column}.day .day-no{font:400 32px/1 "Archivo Black",sans-serif;color:var(--accent);margin-bottom:auto}.day h3{font-size:19px;margin:24px 0 8px}.day p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}.day.rest{background:var(--panel)}
+    .guides{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.guide{padding:30px;border:1px solid var(--line)}.guide h3{font-size:25px;margin:0 0 20px}.guide-list{list-style:none;margin:0;padding:0}.guide-list li{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line);line-height:1.6}.guide-list b{color:var(--accent);font:400 18px/1.6 "Archivo Black",sans-serif}
+    .myths{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.myth{padding:28px;border:1px solid var(--line);min-height:235px}.myth .tag{display:inline-block;background:var(--ink);color:var(--bg);font-size:11px;font-weight:700;padding:6px 8px;margin-bottom:28px}.myth h3{font-size:22px;line-height:1.3;margin:0 0 12px}.myth p{color:var(--muted);line-height:1.7;margin:0}
+    .footer{border-top:1px solid var(--line);padding:28px 0 38px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:12px}.source-links{display:flex;gap:16px;flex-wrap:wrap}.source-links a{text-decoration:underline;text-underline-offset:4px}
+    .reveal{opacity:1;transform:none}
+    @media (max-width:900px){
+      .wrap{width:min(100% - 32px,720px)}.topbar{height:64px}.nav{display:none}.hero{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:68px 24px 52px}.hero-visual{border-left:0;border-top:1px solid var(--line);min-height:72svh}.section{padding:76px 0}.section-head,.manifesto-grid{grid-template-columns:1fr;gap:25px}.section-head p{justify-self:start}.definition-grid,.system{grid-template-columns:1fr}.system-media{min-height:520px}.manifesto h2{font-size:clamp(64px,18vw,112px)}.spectrum{grid-template-columns:1fr}.spectrum-card{border-right:0;border-bottom:1px solid var(--line);min-height:210px}.spectrum-card:last-child{border-bottom:0}.week-grid{grid-template-columns:repeat(2,1fr)}.myths{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:560px){
+      h1{font-size:clamp(54px,16vw,80px);line-height:1}.hero-copy{padding-left:18px;padding-right:18px}.visual-note{left:28px;right:28px;bottom:30px}.visual-note strong{font-size:22px}.index-no{font-size:45px}.measure{inset:14px}.definition-main{padding:26px;min-height:440px}.formula{grid-template-columns:1fr}.formula div{border-right:0;border-bottom:1px solid var(--line);padding:15px 0}.formula div:last-child{border-bottom:0}.formula b{font-size:29px}.definition-side{grid-template-rows:auto}.mini-card{min-height:180px;padding:24px}.system-media{min-height:450px}.system-panel{padding:30px 22px}.tabs{overflow:visible}.tab{flex:1;padding:9px 5px}.protocol-row{grid-template-columns:28px 1fr}.protocol-row span:last-child{grid-column:2}.benchmark,.guides{grid-template-columns:1fr}.week-grid{grid-template-columns:1fr}.day{min-height:180px}.myths{grid-template-columns:1fr}.manifesto{padding:76px 0}.manifesto h2{line-height:.98}.steps{flex-direction:column}.step{display:grid;grid-template-columns:45px 1fr;align-items:center}.step small{grid-column:2}.footer{flex-direction:column}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.track{animation:none}.reveal{opacity:1;transform:none}.plan.active{animation:none}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="wrap topbar">
+    <div class="status"><span class="status-dot"></span><span class="micro">Lean form / 轻量体态</span></div>
+    <nav class="nav" aria-label="页面导航"><a href="#definition">薄肌定义</a><a href="#spectrum">体态光谱</a><a href="#system">训练系统</a><a href="#week">一周模板</a><a href="#approach">开始路径</a></nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">介于单薄与厚重之间</div>
+        <h1><span>练得有型，</span><span class="outline">不必练大。</span></h1>
+        <p class="lede">薄肌是一种克制的身体美学：降低多余脂肪，保留恰到好处的肌肉，让轮廓清晰、动作轻盈、精力在线。</p>
+        <div class="actions">
+          <a class="btn primary" href="#definition">认识薄肌 <span>↘</span></a>
+          <a class="btn" href="#system">查看训练框架</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="轻量力量训练者在健身房进行战绳训练">
+        <img src="assets/img-hero.jpg" alt="穿灰色背心的训练者在健身房进行战绳训练" />
+        <div class="measure"><i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i></div>
+        <div class="visual-note"><div><strong>线条，不是体积。</strong><p>Strength without excess.</p></div><div class="index-no">01</div></div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div class="track"><span>低体脂</span><i>✳</i><span>适度肌肉</span><i>✳</i><span>功能体能</span><i>✳</i><span>可持续习惯</span><i>✳</i><span>低体脂</span><i>✳</i><span>适度肌肉</span><i>✳</i><span>功能体能</span><i>✳</i><span>可持续习惯</span><i>✳</i></div></div>
+
+    <section class="section" id="definition">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="micro">01 / Definition</div><div><h2>一种“刚刚好”的身体答案</h2><p>拒绝节食式单薄，也不追逐堆叠式肌肥大。薄肌关注比例、线条与长期能维持的身体状态。</p></div></div>
+        <div class="definition-grid">
+          <article class="definition-main reveal">
+            <div class="formula">
+              <div><b>低脂</b><small>看得见轮廓</small></div>
+              <div><b>适肌</b><small>撑得起体态</small></div>
+              <div><b>轻盈</b><small>保留动作能力</small></div>
+            </div>
+            <div class="quote">不是把身体缩小，<br>而是让每一寸都更<mark>有效</mark>。</div>
+          </article>
+          <div class="definition-side">
+            <article class="mini-card reveal"><span class="num">3–5</span><div><b>次 / 周力量训练</b><p>用可控制的中等重量建立线条，动作质量优先于堆重量。</p></div></article>
+            <article class="mini-card reveal"><span class="num">7h+</span><div><b>睡眠与恢复</b><p>训练塑造刺激，恢复完成改变。精力与状态本身就是目标。</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="spectrum">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="micro">02 / Spectrum</div><div><h2>先找到位置，再决定方向</h2><p>薄肌不是一个固定体重，而是肌肉量、体脂与动作能力之间的平衡。与其追逐单一数字，不如观察自己的轮廓、力量和恢复。</p></div></div>
+        <div class="spectrum reveal">
+          <article class="spectrum-card"><span class="range">01</span><div><h3>偏单薄</h3><p>体重不高，但力量基础和身体支撑感不足。优先规律进食与渐进力量训练，不急着减脂。</p></div></article>
+          <article class="spectrum-card active"><span class="range">02</span><div><h3>薄肌区间</h3><p>轮廓清晰、围度适中，力量和日常精力都在线。重点是稳定，而不是不断把体重压低。</p></div></article>
+          <article class="spectrum-card"><span class="range">03</span><div><h3>偏厚重</h3><p>肌肉或脂肪量较高，视觉更有体积感。想靠近薄肌，可保留力量训练并温和调整总热量。</p></div></article>
+        </div>
+        <div class="benchmark reveal">
+          <article><b>用表现校准</b><p>动作是否更稳、同样训练是否更从容、日常是否更有精力，比一次称重更能说明方向。</p></article>
+          <article><b>用趋势判断</b><p>固定光线记录轮廓与围度，结合数周趋势观察；不因单日体重波动频繁改变计划。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="system">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="micro">03 / System</div><div><h2>三条线，同一个方向</h2><p>训练、饮食、恢复不是三份待办，而是一套彼此咬合的系统。点击切换，查看薄肌框架。</p></div></div>
+        <div class="system reveal">
+          <div class="system-media"><img src="assets/texture.webp" alt="训练者在暗色健身房进行跳箱训练" /><div class="system-label">动作能力 / 爆发 / 控制</div></div>
+          <div class="system-panel">
+            <div class="tabs" role="tablist" aria-label="薄肌框架">
+              <button class="tab active" role="tab" aria-selected="true" data-plan="train">训练</button>
+              <button class="tab" role="tab" aria-selected="false" data-plan="food">饮食</button>
+              <button class="tab" role="tab" aria-selected="false" data-plan="rest">恢复</button>
+            </div>
+            <article class="plan active" id="train" role="tabpanel">
+              <h3>练线条，<br>也练能力。</h3>
+              <p>以复合动作为主轴，让推、拉、蹲、髋铰链覆盖全身；再用短时有氧保留轻盈感。</p>
+              <div class="protocol"><div class="protocol-row"><span class="dot"></span><b>全身力量</b><span>每周 3–5 次</span></div><div class="protocol-row"><span class="dot"></span><b>中等重量</b><span>每组 8–12 次</span></div><div class="protocol-row"><span class="dot"></span><b>短时有氧</b><span>按恢复状态安排</span></div></div>
+            </article>
+            <article class="plan" id="food" role="tabpanel">
+              <h3>吃得够，<br>才减得稳。</h3>
+              <p>蛋白质支撑肌肉保留，用温和的热量调整减少脂肪；不靠极端断食换短期数字。</p>
+              <div class="protocol"><div class="protocol-row"><span class="dot"></span><b>稳定蛋白</b><span>分散到每一餐</span></div><div class="protocol-row"><span class="dot"></span><b>完整主食</b><span>保障训练表现</span></div><div class="protocol-row"><span class="dot"></span><b>循序调整</b><span>观察 2–3 周趋势</span></div></div>
+            </article>
+            <article class="plan" id="rest" role="tabpanel">
+              <h3>恢复不是，<br>停止进步。</h3>
+              <p>睡眠、压力和疲劳会直接写在训练表现里。留出恢复日，才能稳定把计划做下去。</p>
+              <div class="protocol"><div class="protocol-row"><span class="dot"></span><b>充足睡眠</b><span>目标 7 小时以上</span></div><div class="protocol-row"><span class="dot"></span><b>主动恢复</b><span>步行与轻度拉伸</span></div><div class="protocol-row"><span class="dot"></span><b>状态反馈</b><span>累了就调整训练量</span></div></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="week">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="micro">04 / Starter week</div><div><h2>一周怎么练，直接照着排</h2><p>这是一份强调全身覆盖与恢复的入门模板。动作数量不必多，先把频率、质量和连续性做稳，再逐步增加重量。</p></div></div>
+        <div class="week-grid reveal">
+          <article class="day"><span class="day-no">MON</span><div><h3>全身力量 A</h3><p>深蹲、水平推、水平拉、核心。每个动作保留余力，先练稳定。</p></div></article>
+          <article class="day rest"><span class="day-no">TUE</span><div><h3>低强度活动</h3><p>轻松步行或单车，配合短时拉伸；让身体恢复，而不是完全静止。</p></div></article>
+          <article class="day"><span class="day-no">WED</span><div><h3>全身力量 B</h3><p>髋铰链、垂直推、垂直拉、单腿动作。动作控制优先。</p></div></article>
+          <article class="day rest"><span class="day-no">THU</span><div><h3>完整休息</h3><p>保证进食与睡眠。若持续疲劳，把休息看作计划的一部分。</p></div></article>
+          <article class="day"><span class="day-no">FRI</span><div><h3>全身力量 A</h3><p>重复本周第一套动作，尝试多一次重复或小幅加重，建立渐进。</p></div></article>
+          <article class="day"><span class="day-no">SAT</span><div><h3>短时体能</h3><p>选择熟悉的器械或自重循环，保持动作利落，不追求彻底力竭。</p></div></article>
+          <article class="day rest"><span class="day-no">SUN</span><div><h3>恢复与复盘</h3><p>散步、补足睡眠，记录训练感受，为下一周微调训练量。</p></div></article>
+          <article class="day"><span class="day-no">NEXT</span><div><h3>连续四周</h3><p>先稳定执行，再依据力量、睡眠与精力反馈，决定加量或维持。</p></div></article>
+        </div>
+        <div class="guides reveal">
+          <article class="guide"><h3>训练时，记住三件事</h3><ol class="guide-list"><li><b>01</b><span>大动作先做，辅助动作后做；质量下降时及时停止。</span></li><li><b>02</b><span>每组留出少量余力，避免每次都练到动作变形。</span></li><li><b>03</b><span>只改变一个变量：多一次重复，或小幅增加重量。</span></li></ol></article>
+          <article class="guide"><h3>饮食盘，不用复杂计算</h3><ol class="guide-list"><li><b>01</b><span>每餐安排一份明确的蛋白质来源，支持训练与恢复。</span></li><li><b>02</b><span>训练前后保留主食，确保动作表现与日常精力。</span></li><li><b>03</b><span>蔬果与饮水做底线，热量调整保持温和、可持续。</span></li></ol></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="myths">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="micro">05 / Myths</div><div><h2>别把“薄”，练成了“虚”</h2><p>薄肌的核心是身体有支撑、有力量。任何让你长期疲劳、训练退步或饮食失控的方法，都偏离了目标。</p></div></div>
+        <div class="myths">
+          <article class="myth reveal"><span class="tag">误区 01</span><h3>体重越轻，越接近薄肌</h3><p>体重无法区分肌肉、脂肪与水分。薄肌看的是比例与状态，不是秤上的最小数字。</p></article>
+          <article class="myth reveal"><span class="tag">误区 02</span><h3>只做有氧，就会有线条</h3><p>有氧帮助体能和能量消耗，但线条仍需要力量训练提供肌肉支撑。</p></article>
+          <article class="myth reveal"><span class="tag">误区 03</span><h3>女生一练力量就会变壮</h3><p>围度增长需要长期训练与充足能量。循序力量训练更常带来体态、稳定与控制提升。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto" id="approach">
+      <div class="wrap manifesto-grid">
+        <h2 class="reveal">不卷大，<br><span>练刚好。</span></h2>
+        <div class="manifesto-copy reveal"><p>从认识自己的起点开始，选择一个能坚持的训练密度，再用真实反馈微调。四周不是终点，而是建立节奏的第一个周期。</p><a class="btn primary" href="#definition">从定义开始 <span>↑</span></a><div class="steps"><div class="step active"><b>01</b><small>了解</small></div><div class="step"><b>02</b><small>评估</small></div><div class="step"><b>03</b><small>执行</small></div><div class="step"><b>04</b><small>调整</small></div></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer"><span>首页视觉方向：Dark Editorial / Acid Lime</span><div class="source-links"><a href="https://body365.ro/produs/program-slabit-barbati-personalizat-livrare-60-minute/" target="_blank" rel="noreferrer">图片来源 1</a><a href="https://www.pexels.com/search/talc/" target="_blank" rel="noreferrer">图片来源 2</a></div></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script>
+    (function(){
+      var tabs=document.querySelectorAll('.tab');
+      tabs.forEach(function(tab){tab.addEventListener('click',function(){
+        tabs.forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false')});
+        document.querySelectorAll('.plan').forEach(function(p){p.classList.remove('active')});
+        tab.classList.add('active');tab.setAttribute('aria-selected','true');
+        document.getElementById(tab.getAttribute('data-plan')).classList.add('active');
+      })});
+      var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var items=document.querySelectorAll('.reveal');
+      if(reduced){items.forEach(function(el){el.style.opacity='1';el.style.transform='none'})}
+      else {
+        var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){
+          if(window.anime){anime({targets:entry.target,opacity:[0,1],translateY:[24,0],duration:760,easing:'easeOutExpo'})}
+          else{entry.target.style.opacity='1';entry.target.style.transform='none'}
+          observer.unobserve(entry.target);
+        }})},{threshold:.13});items.forEach(function(el){observer.observe(el)});
+        if(window.anime){anime.timeline({easing:'easeOutExpo'}).add({targets:'.eyebrow',opacity:[0,1],translateX:[-18,0],duration:650}).add({targets:'h1 span',opacity:[0,1],translateY:[32,0],delay:anime.stagger(100),duration:900},'-=420').add({targets:'.lede,.actions',opacity:[0,1],translateY:[18,0],delay:anime.stagger(90),duration:650},'-=520').add({targets:'.hero-visual img',scale:[1.12,1.03],duration:1500},'-=900')}
+      }
+    })();
+  </script>
+</body>
+</html>
